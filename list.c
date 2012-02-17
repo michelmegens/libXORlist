@@ -48,12 +48,12 @@ xorll_list_insert(NODE *prev, NODE *this, NODE *new)
         /* set the node pointer of this */
         this->pointer = (NODE*)(uprev ^ unew);
         new->pointer = (NODE*)(uthis ^ unext);
-        ulong pNext_next = (NODE*)(unew ^ ((ulong)next->pointer));
+        ulong pNext_next = (unew ^ ((ulong)next->pointer));
         next->pointer = (NODE*)(pNext_next ? unew ^ pNext_next : unew ^ 0);
 }
 
 /**
- * xorll_list_add(NODE *list, NODE *node, NODE *new)
+ * \fn xorll_list_add(NODE *list, NODE *node, NODE *new)
  * \brief Add the node <i>new</i> to <i>list</i>.
  * \param list The list head.
  * \param node The node to add the new node after.

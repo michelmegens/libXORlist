@@ -9,8 +9,18 @@
 
 #include <stdlib.h>
 
+/**
+ * \typedef NODE
+ * \brief The linked list nodes the library works with.
+ */
 typedef struct xornode
 {
+        /**
+         * \var pointer
+         * \brief In the pointer variable are the previous and next pointer stored.
+         * \var value
+         * \brief Debug value.
+         */
         void *pointer;
         unsigned int value;
 } NODE;
@@ -26,15 +36,18 @@ typedef struct xornode
 NODE *xorll_get_next(NODE *prev, NODE *this);
 
 /**
- * \fn xorll_list_insert(NODE *alpha, NODE *beta, NODE *node)
- * \brief Adds <b>node</b> to <b>list</b>.
- * \param alpa The node will be inserted after alpha.
- * \param beta The node will be inserted before beta.
- * \param node The list node to add to the list.
- * \warning <i>alpha</i> and <i>beta</i> MUST be linked to together directly!
+ * \fn xorll_list_insert(NODE *prev, NODE *this, NODE *new)
+ * 
+ * \param prev Previous pointer of <i>this</i>.
+ * \param this The node will be after <i>this</i>
+ * \param new The list node to add to the list.
+ * \brief Adds <b>new</b> to the list.
+ * 
+ * \return The error code.
+ * \warning <i>prev</i> and <i>this</i> MUST be consecutive.
  *
- * This function will insert the xornode node between alpha and beta.
+ * This function will insert the xornode node after the <i>this</i> node.
  */
-static int xorll_list_insert(NODE *alpa, NODE *beta, NODE *node);
+static int xorll_list_insert(NODE *prev, NODE *this, NODE *new);
 
 #endif
