@@ -4,8 +4,9 @@
 
 CC=gcc
 LD=gcc
-CCFLAGS=-c -m32
+CCFLAGS=-c -m32 -Iinclude/
 LDFLAGS=-m32
+
 
 #TARGET
 TARGET=xorll
@@ -25,3 +26,4 @@ $(TARGET): $(OBJS)
 .PHONY: clean
 clean:
 	-rm -fv $(OBJS) $(TARGET)
+

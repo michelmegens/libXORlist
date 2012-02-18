@@ -4,7 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "list.h"
+#include <list.h>
 #include "debug.h"
 #include "error.h"
 
