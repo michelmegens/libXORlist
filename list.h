@@ -4,11 +4,10 @@
 
 /** \file */
 
-#ifndef __LIST_H
-#define __LIST_H
-
 #include <stdlib.h>
 
+#ifndef __LIST_H
+#define __LIST_H
 /**
  * \typedef NODE
  * \brief The linked list nodes the library works with.
@@ -48,6 +47,6 @@ NODE *xorll_get_next(NODE *prev, NODE *this);
  *
  * This function will insert the xornode node after the <i>this</i> node.
  */
-static int xorll_list_insert(NODE *prev, NODE *this, NODE *new);
+int xorll_list_insert(NODE *prev, NODE *this, NODE *new);
 
 #endif

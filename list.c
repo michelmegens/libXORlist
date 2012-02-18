@@ -5,7 +5,9 @@
 /** \file */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include "list.h"
+#include "error.h"
 
 /**
  * \fn xorll_get_next(NODE *prev, NODE *this)
@@ -36,7 +38,7 @@ xorll_get_next(NODE *prev, NODE *this)
  *
  * This function will insert the xornode node between alpha and beta.
  */
-static int
+int
 xorll_list_insert(NODE *prev, NODE *this, NODE *new)
 {
         ulong uprev = (ulong)prev;
@@ -44,12 +46,18 @@ xorll_list_insert(NODE *prev, NODE *this, NODE *new)
         ulong unew  = (ulong)new;
         NODE *next  = xorll_get_next(prev, this);
         ulong unext = (ulong)next;
+        if(NULL == next)
+        {
+                this->pointer = new;
+                return OK;
+        }
 
         /* set the node pointer of this */
         this->pointer = (NODE*)(uprev ^ unew);
         new->pointer = (NODE*)(uthis ^ unext);
         ulong pNext_next = (unew ^ ((ulong)next->pointer));
         next->pointer = (NODE*)(pNext_next ? unew ^ pNext_next : unew ^ 0);
+        return OK;
 }
 
 /**

@@ -3,9 +3,9 @@
 #
 
 CC=gcc
-LD=ld
+LD=gcc
 CCFLAGS=-c -m32
-LDFLAGS=-m elf_i386 --oformat elf32-i386 -emain
+LDFLAGS=-m32
 
 #TARGET
 TARGET=xorll
