@@ -6,8 +6,18 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+
+#ifdef WINDOWS
+#include <types.h>
+#endif
+
 #include <list.h>
 #include "error.h"
+
+static inline void print_node(int it, NODE *node)
+{
+        printf("Iterator: %i, Node value: 0x%X\n", it, node->value);
+}
 
 /**
  * \fn xorll_get_next(NODE *prev, NODE *this)
@@ -20,8 +30,10 @@
 NODE *
 xorll_get_next(NODE *prev, NODE *this)
 {
+        if(this == NULL)
+                return this;
         ulong uprev = (ulong)prev;
-        ulong uthis = (ulong)this->pointer;
+        ulong uthis = (ulong)((this) ? this->pointer : NULL);
 
         ulong next = uprev ^ uthis;
 
@@ -46,17 +58,52 @@ xorll_list_insert(NODE *prev, NODE *this, NODE *new)
         ulong unew  = (ulong)new;
         NODE *next  = xorll_get_next(prev, this);
         ulong unext = (ulong)next;
+
+        ulong pNext_next = (next) ? (ulong)next->pointer ^ uthis : 0 ^ uthis;
+        
         if(NULL == next)
         {
-                this->pointer = new;
+                this->pointer = (void*)(uprev ^ unew);
+                new->pointer = (NODE*)(uthis ^ 0);
                 return OK;
         }
 
         /* set the node pointer of this */
         this->pointer = (NODE*)(uprev ^ unew);
         new->pointer = (NODE*)(uthis ^ unext);
-        ulong pNext_next = (unew ^ ((ulong)next->pointer));
         next->pointer = (NODE*)(pNext_next ? unew ^ pNext_next : unew ^ 0);
+        return OK;
+}
+
+/**
+ * \fn xorll_remove_node(NODE *prev, NODE *this)
+ * \param prev Previous node of <i>this</i>
+ * \param this Node which has to be removed.
+ * \brief Remove node <i>this</i> from the list.
+ * 
+ * xorll_remove_node removes node <i>this</i> from the linked list.
+ */
+int
+xorll_remove_node(NODE *prev, NODE *this)
+{
+        if(NULL == this)
+                return NULL_PTR;
+        
+        NODE *next = xorll_get_next(prev, this);
+        ulong uprev_prev = (ulong) ((prev) ? get_prev_node(prev, this) : NULL);
+        
+        ulong unext = (ulong)next;
+        ulong uprev = (ulong)prev;
+        ulong uthis = (ulong)this;
+        ulong unext_next = (ulong) ((next) ? (ulong)next->pointer ^ uthis : 0);
+        
+        if(NULL != prev)
+                prev->pointer = (void*)(uprev_prev ^ unext);
+        
+        if(NULL != next)
+                next->pointer = (void*)(unext_next ^ uprev);
+        this->pointer = NULL;
+//         printf("%x\n", next->pointer);
         return OK;
 }
 
@@ -72,7 +119,32 @@ xorll_list_insert(NODE *prev, NODE *this, NODE *new)
  * <i>list</i>.
  */
 int
-xorll_list_add(NODE *list, NODE *node, NODE *new)
+xorll_list_add(NODE *listHead, NODE *node, NODE *new)
 {
+        NODE *prev = NULL,*carriage = listHead, *tmp;
+
+        if(!new)
+                return NULL_PTR;
+        while(carriage)
+        {
+                if(carriage == node)
+                {
+                        xorll_list_insert(prev, carriage, new);
+                        break;
+                }
+                tmp = carriage;
+                carriage = xorll_get_next(prev, tmp);                
+                prev = tmp;
+                
+                if(!carriage && !node && new)
+                {
+                        carriage = tmp;
+                        prev = get_prev_node(carriage, NULL);
+                        xorll_list_insert(prev, carriage, new);
+                }
+        }
         
+        return OK;
 }
+
+

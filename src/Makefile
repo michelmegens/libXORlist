@@ -4,8 +4,9 @@
 
 CC=gcc
 LD=gcc
-CCFLAGS=-c -m32 -Iinclude/
+CCFLAGS=-c -m32 -Iinclude/ $(FLAGS)
 LDFLAGS=-m32
+CMDFLAGS=FLAGS="$(FLAGS) "
 
 
 #TARGET

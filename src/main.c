@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <list.h>
+
+#ifdef WINDOWS
+#include <types.h>
+#endif
+
 #include "debug.h"
 #include "error.h"
 
@@ -13,6 +18,7 @@ static NODE *pHead = NULL;
 int main(int argc, char **argv)
 {
         init_list();
+        getchar();
         return -EXIT_SUCCESS;
 }
 
@@ -34,6 +40,15 @@ init_list()
         next->value = 0x80;
         xorll_list_insert(NULL, pHead, next);
         print_node(1,xorll_get_next(NULL, pHead));
+
+        NODE *third = calloc(1, sizeof(*third));
+        third->value = 0x40;
+        xorll_list_insert(NULL, pHead, third);
+        print_node(3, xorll_get_next(NULL, pHead));
+        xorll_remove_node(third, next);
+        
+        xorll_list_add(pHead, third, next);
+        print_node(4, xorll_get_next(pHead, third));
         return OK;
 }
 
@@ -41,10 +56,4 @@ static void
 destroy_list()
 {
         free(pHead);
-}
-
-static inline void
-print_node(int it, NODE *node)
-{
-        printf("Iterator: %i, Node value: 0x%X\n", it, node->value);
 }

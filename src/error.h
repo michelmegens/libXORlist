@@ -9,6 +9,7 @@
 typedef enum
 {
         OK = 0,
+        NULL_PTR,
         GENERAL_ERR,
         NO_MEM,
 } error_t;
