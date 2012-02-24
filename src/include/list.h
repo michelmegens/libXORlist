@@ -5,6 +5,7 @@
 /** \file */
 
 #include <stdlib.h>
+#include <error.h>
 
 #ifdef WINDOWS
 #include <types.h>
@@ -12,6 +13,12 @@
 
 #ifndef __LIST_H
 #define __LIST_H
+
+struct xornode;
+
+typedef hook_result_t (*xor_list_iterator_t)(struct xornode*,
+                                                        struct xornode*);
+
 /**
  * \typedef NODE
  * \brief The linked list nodes the library works with.
@@ -75,6 +82,18 @@ int xorll_remove_node(NODE *prev, NODE *this);
  * <i>list</i>.
  */
 int xorll_list_add(NODE *listHead, NODE *node, NODE *new);
+
+/**
+ * \fn iterate_xor_list(NODE *prev, NODE *head, xor_list_iterator_t hook)
+ * \param prev Previous node.
+ * \param head List head.
+ * \param hook Iterate hook.
+ * \brief Iterate trough an XOR list.
+ *
+ * This function will iterate trough an XOR linked list and call hook on every
+ * node.
+ */
+int iterate_xor_list(NODE *prev, NODE *head, xor_list_iterator_t hook);
 
 static inline NODE*
 get_prev_node(NODE *this, NODE *next)

@@ -14,4 +14,10 @@ typedef enum
         NO_MEM,
 } error_t;
 
+typedef enum
+{
+        HOOK_DONE,
+        HOOK_NOT_DONE,
+} hook_result_t;
+
 #endif

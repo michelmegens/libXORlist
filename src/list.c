@@ -12,7 +12,7 @@
 #endif
 
 #include <list.h>
-#include "error.h"
+#include <error.h>
 
 static inline void print_node(int it, NODE *node)
 {
@@ -147,4 +147,23 @@ xorll_list_add(NODE *listHead, NODE *node, NODE *new)
         return OK;
 }
 
+int
+iterate_xor_list(NODE *prev, NODE *head, xor_list_iterator_t hook)
+{
+        NODE *carriage = head, *tmp;
+        int result = -1;
 
+        if(!hook)
+                return NULL_PTR;
+        while(carriage)
+        {
+                if(HOOK_DONE == (result = hook(prev, carriage)))
+                        break;
+                
+                tmp = carriage;
+                carriage = xorll_get_next(prev, carriage);
+                prev = tmp;
+        }
+
+        return result;
+}

@@ -11,7 +11,7 @@
 #endif
 
 #include "debug.h"
-#include "error.h"
+#include <error.h>
 
 static NODE *pHead = NULL;
 
