@@ -84,16 +84,27 @@ int xorll_list_add(NODE *listHead, NODE *node, NODE *new);
 
 /**
  * \fn iterate_xor_list(NODE *prev, NODE *head, xor_list_iterator_t hook)
- * \param prev Previous node.
- * \param head List head.
- * \param hook Iterate hook.
- * \brief Iterate trough an XOR list.
+ * \param prev Previous node of the starting point <i>head</i>
+ * \param head Iterate starting point.
+ * \param hook Will be called every iteration.
+ * \return An error code.
+ * \brief Iterates trough a XOR linked list.
  *
- * This function will iterate trough an XOR linked list and call hook on every
- * node.
+ * This function returns trough a XOR-linkedlist and it will call hook on every
+ * iteration.
  */
 int iterate_xor_list(NODE *prev, NODE *head, xor_list_iterator_t hook);
 
+/**
+ * \fn get_prev_node(NODE *this, NODE *next)
+ * \param this 'Current' node.
+ * \param next Consecutive node of <i>this</i>.
+ * \brief This function returns the previous node of <i>this</i>
+ * \return The previous node of <i>this</i>.
+ *
+ * This function calculates the previous node of <i>this</i> using the <i>next</i>
+ * node.
+ */
 static inline NODE*
 get_prev_node(NODE *this, NODE *next)
 {

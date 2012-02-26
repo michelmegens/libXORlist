@@ -148,6 +148,17 @@ xorll_list_add(NODE *listHead, NODE *node, NODE *new)
         return OK;
 }
 
+/**
+ * \fn iterate_xor_list(NODE *prev, NODE *head, xor_list_iterator_t hook)
+ * \param prev Previous node of the starting point <i>head</i>
+ * \param head Iterate starting point.
+ * \param hook Will be called every iteration.
+ * \return An error code.
+ * \brief Iterates trough a XOR linked list.
+ *
+ * This function returns trough a XOR-linkedlist and it will call hook on every
+ * iteration.
+ */
 int
 iterate_xor_list(NODE *prev, NODE *head, xor_list_iterator_t hook)
 {
