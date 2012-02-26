@@ -16,8 +16,7 @@
 
 struct xornode;
 
-typedef hook_result_t (*xor_list_iterator_t)(struct xornode*,
-                                                        struct xornode*);
+typedef hook_result_t (*xor_list_iterator_t)(struct xornode*);
 
 /**
  * \typedef NODE

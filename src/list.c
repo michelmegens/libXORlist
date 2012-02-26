@@ -141,6 +141,7 @@ xorll_list_add(NODE *listHead, NODE *node, NODE *new)
                         carriage = tmp;
                         prev = get_prev_node(carriage, NULL);
                         xorll_list_insert(prev, carriage, new);
+                        break;
                 }
         }
         
@@ -157,13 +158,14 @@ iterate_xor_list(NODE *prev, NODE *head, xor_list_iterator_t hook)
                 return NULL_PTR;
         while(carriage)
         {
-                if(HOOK_DONE == (result = hook(prev, carriage)))
-                        break;
-                
-                tmp = carriage;
-                carriage = xorll_get_next(prev, carriage);
+                tmp = carriage; // save to set prev later
+                carriage = xorll_get_next(prev, tmp); // get next one..
+                if(prev)
+                        if(HOOK_DONE == (result = hook(prev)))
+                                break;
                 prev = tmp;
         }
+        result = hook(prev);
 
         return result;
 }
